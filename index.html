@@ -4,14 +4,16 @@
 <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Editor Markdown</title>
+     <title>Editor de Markdown</title>
      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
      <style>
+          /* Reset e base */
           body {
-               font-family: Arial, sans-serif;
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                margin: 0;
                padding: 20px;
                background: #f9f9f9;
+               color: #333;
                transition: background 0.3s, color 0.3s;
           }
 
@@ -19,45 +21,65 @@
                max-width: 800px;
                margin: auto;
                background: #fff;
-               padding: 20px;
-               border-radius: 8px;
-               box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+               padding: 25px 30px;
+               border-radius: 12px;
+               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
                transition: background 0.3s, color 0.3s;
+          }
+
+          h2 {
+               margin-top: 0;
+               margin-bottom: 20px;
+               font-size: 1.8em;
           }
 
           textarea {
                width: 100%;
-               height: 200px;
-               padding: 10px;
+               height: 220px;
+               padding: 14px;
                font-family: monospace;
-               border-radius: 6px;
+               font-size: 1em;
+               border-radius: 8px;
                border: 1px solid #ccc;
                resize: vertical;
-               transition: background 0.3s, color 0.3s;
+               transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+          }
+
+          textarea:focus {
+               border-color: #007bff;
+               box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+               outline: none;
+          }
+
+          .button-group {
+               margin-top: 15px;
+               display: flex;
+               flex-wrap: wrap;
+               gap: 10px;
           }
 
           button {
-               margin-top: 15px;
-               margin-right: 10px;
-               padding: 10px 15px;
+               padding: 10px 18px;
                background: #007bff;
-               color: white;
+               color: #fff;
                border: none;
                border-radius: 6px;
                cursor: pointer;
+               font-size: 1em;
+               transition: background 0.3s, transform 0.2s;
           }
 
           button:hover {
                background: #0056b3;
+               transform: translateY(-1px);
           }
 
-          #preview {
-               margin-top: 20px;
-               padding: 15px;
-               border: 1px solid #ddd;
-               border-radius: 6px;
-               background: #fafafa;
-               transition: background 0.3s, color 0.3s;
+          button:active {
+               transform: translateY(0);
+          }
+
+          input[type="file"] {
+               margin-top: 15px;
           }
 
           /* Tema escuro */
@@ -76,10 +98,58 @@
                border: 1px solid #555;
           }
 
-          #preview.dark {
-               background: #2b2b2b;
+          /* Seção de tópicos para README */
+          .topicos {
+               margin-top: 30px;
+               padding: 20px;
+               background: #f1f7fc;
+               border-radius: 8px;
+          }
+
+          .topicos.dark {
+               background: #2b2b3a;
                color: #f1f1f1;
-               border: 1px solid #444;
+          }
+
+          .topicos h3 {
+               margin-top: 0;
+          }
+
+          .topicos ol {
+               padding-left: 20px;
+          }
+
+          .topicos li {
+               margin-bottom: 10px;
+          }
+
+          /* Referências */
+          .references {
+               margin-top: 30px;
+               padding: 20px;
+               background: #eef2f5;
+               border-radius: 8px;
+          }
+
+          .references a {
+               display: block;
+               margin-bottom: 10px;
+               color: #007bff;
+               text-decoration: none;
+               transition: color 0.3s;
+          }
+
+          .references a:hover {
+               text-decoration: underline;
+               color: #0056b3;
+          }
+
+          .references.dark {
+               background: #333;
+          }
+
+          .references.dark a {
+               color: #66b2ff;
           }
      </style>
 </head>
@@ -88,13 +158,42 @@
      <div class="container" id="container">
           <h2>Editor de Markdown</h2>
           <textarea id="editor" placeholder="Digite seu texto em Markdown..."></textarea>
-          <br>
-          <button onclick="exportMD()">Exportar como .md</button>
-          <button onclick="previewMD()">Pré-visualizar</button>
-          <button onclick="toggleTheme()">🌙 Alternar Tema</button>
-          <input type="file" id="fileInput" accept=".md" onchange="loadFile(event)" />
 
-          <div id="preview"></div>
+          <div class="button-group">
+               <button onclick="exportMD()">Exportar como .md</button>
+               <button onclick="toggleTheme()">Alternar Tema</button>
+               <input type="file" id="fileInput" accept=".md" onchange="loadFile(event)" />
+          </div>
+
+          <!-- Seção de tópicos para README -->
+          <div class="topicos" id="topicos">
+               <h3>Dicas e Principais Tópicos para README</h3>
+               <ol>
+                    <li><strong>Nome do Projeto:</strong> Título claro, com badges de status ou licença.</li>
+                    <li><strong>Descrição:</strong> Resumo objetivo do projeto e problema que resolve.</li>
+                    <li><strong>Screenshots / Demonstrações (opcional):</strong> Imagens ou GIFs mostrando o projeto.
+                    </li>
+                    <li><strong>Funcionalidades:</strong> Lista do que o projeto faz.</li>
+                    <li><strong>Tecnologias / Stack:</strong> Linguagens, frameworks e ferramentas usadas.</li>
+                    <li><strong>Instalação:</strong> Passos para rodar o projeto localmente.</li>
+                    <li><strong>Como Usar:</strong> Instruções básicas e exemplos de uso.</li>
+                    <li><strong>Contribuição (opcional):</strong> Como colaborar no projeto.</li>
+                    <li><strong>Licença:</strong> Tipo de licença (MIT, GPL, Apache…).</li>
+                    <li><strong>Contato / Autor:</strong> Informações do desenvolvedor ou equipe.</li>
+                    <li><strong>Badges (opcional):</strong> Status de build, testes, versão, cobertura etc.</li>
+               </ol>
+          </div>
+
+          <!-- Referências oficiais -->
+          <div class="references" id="references">
+               <h3>Referências Oficiais de Markdown</h3>
+               <a href="https://www.markdownguide.org/" target="_blank">Markdown Guide – Guia completo e cheatsheet</a>
+               <a href="https://commonmark.org/help/" target="_blank">CommonMark – Especificação oficial</a>
+               <a href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
+                    target="_blank">GitHub Markdown – Guia oficial do GitHub</a>
+               <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">Daring Fireball – Markdown
+                    original de John Gruber</a>
+          </div>
      </div>
 
      <script>
@@ -109,16 +208,12 @@
                URL.revokeObjectURL(url);
           }
 
-          function previewMD() {
-               const text = document.getElementById("editor").value;
-               document.getElementById("preview").innerHTML = marked.parse(text);
-          }
-
           function toggleTheme() {
                document.body.classList.toggle("dark");
                document.getElementById("container").classList.toggle("dark");
                document.getElementById("editor").classList.toggle("dark");
-               document.getElementById("preview").classList.toggle("dark");
+               document.getElementById("topicos").classList.toggle("dark");
+               document.getElementById("references").classList.toggle("dark");
           }
 
           function loadFile(event) {
@@ -127,7 +222,6 @@
                     const reader = new FileReader();
                     reader.onload = function (e) {
                          document.getElementById("editor").value = e.target.result;
-                         previewMD(); // já renderiza o conteúdo
                     };
                     reader.readAsText(file);
                } else {
